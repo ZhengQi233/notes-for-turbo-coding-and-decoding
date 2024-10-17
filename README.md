@@ -16,7 +16,7 @@ The note briefly explains how turbo coding and decoding works.
 
 生成一个带 feedback的recursive convolutional code (2,1,4) 【2 应该是输出数量，1 应该是每组寄存器有几个小单元，4 是有几个寄存器】
 
-$K^*$个输入信息符号，最后输入 $\nu=4$ (寄存器数量) 个符号使得寄存器状态 回到 0. 这等效于 block code分组码 $(N,K^*)$ 其中 $K=K^*+\nu$. 因为分组码就是 把一串信息分成很多个组,分别编码. 线性分组码才是要乘矩阵
+$K^* $个输入信息符号，最后输入 $\nu=4$ (寄存器数量) 个符号使得寄存器状态 回到 0. 这等效于 block code分组码 $(N,K^*)$ 其中 $K=K^*+\nu$. 因为分组码就是 把一串信息分成很多个组,分别编码. 线性分组码才是要乘矩阵
 
 这里 $K^*$ 取 $12$, $N=32$, 即 $ (32, 12)$
 
@@ -77,9 +77,7 @@ $K^*$个输入信息符号，最后输入 $\nu=4$ (寄存器数量) 个符号使
 turbo译码的主要思想就是
 
 外部信息 = 后验信息 - 内部信息 = 后验信息 - ( 信道信息 + 先验信息 )
-$$
-L_e(u_l)=L(u_l)-L_c\mathbf{r}^{(0)}-L_a(u_l)
-$$
+$$L_e(u_l)=L(u_l)-L_c\mathbf{r}^{(0)}-L_a(u_l)$$
 其中$L_c=\frac{4E_S}{N_0}$
 
 每个编码器输入 先验信息$L_a(u_l)$ 和 观测值 $\mathbf{r}$ , 输出 后验信息 $L(u_l)$
@@ -99,13 +97,9 @@ $$
 需要注意, 这里的 信道信息, 和parity vector的观测值 $\mathbf{r}^{(1)}$ 与 $\mathbf{r}^{(2)}$ 无关, 只和 信息序列 对应的观测值$\mathbf{r}^{(0)}$ 有关
 
 收敛条件如图所示, 因为我们的后验信息LLR是
-$$
-L^{(1)}(u_l)=\log\frac{P(u=+1|\mathbf{r^{(0)}},\mathbf{r^{(1)}})}{P(u=-1|\mathbf{r^{(0)}},\mathbf{r^{(1)}})}
-$$
+$$L^{(1)}(u_l)=\log\frac{P(u=+1|\mathbf{r^{(0)}},\mathbf{r^{(1)}})}{P(u=-1|\mathbf{r^{(0)}},\mathbf{r^{(1)}})}$$
 
-$$
-L^{(2)}(u_l)=\log\frac{P(u=+1|\mathbf{r^{(0)}},\mathbf{r^{(2)}})}{P(u=-1|\mathbf{r^{(0)}},\mathbf{r^{(2)}})}
-$$
+$$L^{(2)}(u_l)=\log\frac{P(u=+1|\mathbf{r^{(0)}},\mathbf{r^{(2)}})}{P(u=-1|\mathbf{r^{(0)}},\mathbf{r^{(2)}})}$$
 
 这里近似于对每个decoder分别做MAP, 当这两个值接近时,说明译码结果稳定,收敛
 
@@ -126,15 +120,11 @@ EXIT 全称是 extrinsic information transfer chart, 体现了 译码器输入�
 其中 $\xi$ 是$L_a(u_l)$, 这个是用互信息定义推的
 
 由于
-$$
-L_e(u_l)=L(u_l)-L_c\mathbf{r}^{(0)}-L_a(u_l)
-$$
+$$L_e(u_l)=L(u_l)-L_c\mathbf{r}^{(0)}-L_a(u_l)$$
 其中 $\mathbf{r}^{(0)}=(\mathbf{v}^{(0)}+\mathbf{n})/\sqrt{E_s}$, 这意味着$\mathbf{r}^{0}$分布为 $\mathcal{N}(±1,\frac{N_0}{2Es})$ 信道信息 $L_c\mathbf{r}^{(0)}$ 的分布是均值为 $±L_c$, 方差为 $\frac{N_0}{2Es}L_c^2=2L_c$
 
 在分组长度很大时, 外部信息的分布仿真结果说明, 我们可以将 先验信息建模为高斯分布 $\mathcal{N}(\sigma_a^2/2,\sigma_a^2)$
-$$
-P_{L_a}(\xi|u_l)=\frac{1}{\sqrt{2\pi\sigma_a^2}}e^{-(\xi-u_l\sigma_a^2/2)^2/2\sigma_a^2}
-$$
+$$P_{L_a}(\xi|u_l)=\frac{1}{\sqrt{2\pi\sigma_a^2}}e^{-(\xi-u_l\sigma_a^2/2)^2/2\sigma_a^2}$$
 确定了 $\sigma_a^2$ ,  就可以拟合这个高斯分布, 带入求得互信息 $I_a\left[u_l;L_e\left(u_l\right)\right]$ . 确定信噪比之后, 就可以通过译码器 获得输出的 后验信息分布 (只需要执行一次), 然后得到互信息  $I_e\left[u_l;L_e\left(u_l\right)\right]$, 这就是下图中的一个点, 有一个自变量: $\sigma_a^2 \rightarrow I_a$ ,  一个参数$E_b/N_0$ :  $I_a+E_b/N_0 \rightarrow I_e$
 
 <img src="./image-20241017105346254.png" alt="image-20241017105346254" style="zoom:67%;" />
